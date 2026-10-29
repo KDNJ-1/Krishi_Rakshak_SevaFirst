@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Krishi-Rakshak Simulator</title>
+<style>
+:root{--bg:#fbf5e9;--card:#fff;--ink:#2b2118;--mut:#6b5d50;--line:#e8dcc7;--ter:#b5562b;--ter2:#8f3f1c;--grn:#2e9d4f;--blu:#2b78c0;--amb:#d99200;--red:#d6453a;--tint:#fff1de}
+@media(prefers-color-scheme:dark){:root{--bg:#1c1710;--card:#272019;--ink:#f4ebdc;--mut:#b9a993;--line:#3d3427;--ter:#e58a5c;--ter2:#f0a37c;--grn:#6fcf8a;--blu:#7bb8ee;--amb:#f0b34a;--red:#ef7b6d;--tint:#322819}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,"Segoe UI",Roboto,"Noto Sans Devanagari",sans-serif}
+.wrap{max-width:1120px;margin:0 auto;padding:0 16px}
+section{padding:26px 0}
+h1{font-size:clamp(30px,5vw,48px);line-height:1.05;margin:0 0 10px;letter-spacing:-.5px}
+h2{font-size:clamp(22px,3.2vw,30px);margin:0 0 4px}
+.kick{display:inline-block;background:var(--ter);color:#fff;border-radius:99px;padding:3px 12px;font-size:12px;font-weight:700;letter-spacing:.6px;text-transform:uppercase}
+.lede{color:var(--mut);margin:0 0 14px;max-width:720px}
+.hero{display:grid;grid-template-columns:1.15fr .85fr;gap:24px;align-items:center;padding-top:22px}
+@media(max-width:800px){.hero{grid-template-columns:1fr}}
+.hero svg{width:100%;height:auto;border-radius:22px;box-shadow:0 8px 24px #b5562b26}
+.banner{background:#fff4d6;color:#5a4300;border:1px solid #e9c46a;border-radius:12px;padding:9px 13px;font-size:13px;margin:14px 0}
+.chips{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:14px}
+.chip{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 12px;text-decoration:none;color:inherit;position:relative;display:block}
+.chip:hover{border-color:var(--ter);transform:translateY(-2px)}.chip{transition:.15s}
+.chip b{display:block;font-size:24px;color:var(--ter);line-height:1.1}
+.chip span{font-size:12.5px;color:var(--mut);display:block;margin-top:3px}
+.chip i{position:absolute;top:8px;right:10px;font-size:10px;font-style:normal;color:var(--mut);border:1px solid var(--line);border-radius:6px;padding:0 5px}
+.skies{display:flex;flex-wrap:wrap;gap:10px;margin:8px 0 12px}
+.sky{flex:1 1 150px;border:2px solid var(--line);background:var(--card);border-radius:16px;padding:10px;cursor:pointer;text-align:left;font:inherit;color:inherit}
+.sky.on{border-color:var(--ter);background:var(--tint);box-shadow:0 4px 14px #b5562b22}
+.sky em{display:block;font-size:26px;font-style:normal}.sky b{display:block}.sky small{color:var(--mut);line-height:1.25;display:block}
+details.tw{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:8px 14px;margin-bottom:12px}
+details.tw summary{cursor:pointer;font-weight:600}
+.sliders{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:8px 18px;margin-top:10px}
+.sliders label{font-size:13px;color:var(--mut);display:block}.sliders b{color:var(--ink)}
+input[type=range]{width:100%;accent-color:var(--ter)}
+.tg{display:flex;gap:14px;flex-wrap:wrap;margin-top:8px;font-size:13px}
+.bar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:8px 12px;margin:8px 0 12px;position:sticky;top:6px;z-index:5}
+button{font:inherit;padding:7px 14px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+button.p{background:var(--ter);border-color:var(--ter);color:#fff;font-weight:600}
+.four{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media(max-width:1000px){.four{grid-template-columns:repeat(2,1fr)}}@media(max-width:560px){.four{grid-template-columns:1fr}}
+.fc{background:var(--card);border:2px solid var(--line);border-radius:18px;padding:10px;position:relative}
+.fc.best{border-color:var(--grn);box-shadow:0 6px 18px #2e9d4f26}
+.fc .crown{position:absolute;top:-11px;right:12px;background:var(--grn);color:#fff;border-radius:99px;font-size:11px;font-weight:700;padding:2px 10px}
+.fc h3{margin:6px 0 0;font-size:16px}.fc .tool{font-size:12.5px;color:var(--mut);margin-bottom:6px}
+.fc svg{display:block;width:100%;height:auto}
+.say{background:var(--tint);border:1px dashed var(--ter);border-radius:12px;padding:6px 10px;font-size:13px;margin:8px 0;min-height:52px}
+.say b{display:block}
+.mm{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.mm div{background:var(--bg);border-radius:10px;padding:5px 8px;text-align:center}.mm b{display:block;font-size:18px}.mm span{font-size:11px;color:var(--mut)}
+.mm .money b{color:var(--grn)}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.tab{border-radius:99px;padding:6px 14px}.tab.on{background:var(--ter);color:#fff;border-color:var(--ter)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px 16px}
+.row{display:grid;grid-template-columns:150px 1fr 90px;gap:10px;align-items:center;margin:7px 0;font-size:14px}
+@media(max-width:560px){.row{grid-template-columns:96px 1fr 70px;font-size:12.5px}}
+.track{background:var(--bg);border-radius:99px;height:22px;overflow:hidden}.fill{height:100%;border-radius:99px;transition:width .35s}
+.row .v{text-align:right;font-weight:700}
+.why{background:var(--tint);border-radius:12px;padding:8px 12px;font-size:14px;margin-top:10px}
+.big{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-top:12px}
+.bn{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px}
+.bn h4{margin:0 0 6px;font-size:15px}.bn b{font-size:24px;color:var(--ter);display:block;line-height:1.15}.bn small{color:var(--mut)}
+.src{font-size:13px;color:var(--mut)}.src li{margin:4px 0}.src a{color:var(--ter2)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media(max-width:760px){.two{grid-template-columns:1fr}}
+.leg{font-size:12px;color:var(--mut);display:flex;gap:12px;flex-wrap:wrap;margin:6px 0}.leg i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:4px}
+svg.ch{width:100%;height:auto;display:block}
+.hold{color:var(--grn)}.irrigate{color:var(--blu)}.dry{color:var(--red)}
+footer{padding:18px 0 40px;color:var(--mut);font-size:12.5px}
+</style></head><body>
+<div class="wrap">
+<section class="hero"><div>
+ <span class="kick">Concept simulator · Seva First Innovation Challenge</span>
+ <h1>Same field.<br>Same sky.<br>Four farmers.</h1>
+ <p class="lede">One monsoon decides who earns and who loses. In a drought year every irrigation counts and every guess costs money. Watch four farmers face the same weather, each with a different tool, and see what changes: the crop, the income, and the nation's food.</p>
+ <div class="banner"><b>Illustrative model, not field data.</b> Rain events, thresholds, how often farmers follow a device, prices and costs are stated assumptions, to be tested in a pilot. Figures with a <i>source</i> tag come from the linked official or news sources.</div>
+</div><div id="hero"></div></section>
+
+<section style="padding-top:0"><div class="chips" id="chips"></div></section>
+
+<section id="four"><span class="kick">1 · Pick a sky</span><h2>What kind of season is it?</h2>
+ <div class="skies" id="skies"></div>
+ <details class="tw"><summary>Tweak the assumptions (everything is adjustable)</summary>
+  <div class="sliders" id="sliders"></div><div class="tg" id="toggles"></div></details>
+</section>
+
+<section style="padding-top:0"><span class="kick">2 · Four farmers, one field</span><h2>Meet Ramu, Sunita, Vijay and Anand</h2>
+ <p class="lede" id="blurb"></p>
+ <div class="bar"><button class="p" id="play">▶ Play the season</button><label>Day <b id="dayv">90</b> <input type="range" id="day" min="1" max="90" value="90" style="width:200px;vertical-align:middle"></label>
+  <span class="leg"><span><i style="background:var(--blu)"></i>Soil water</span><span><i style="background:#b5562b"></i>Rain</span><span><i style="background:var(--grn)"></i>Irrigation</span><span><i style="background:var(--red)"></i>Crop-stress zone</span></span></div>
+ <div class="four" id="four4"></div>
+</section>
+
+<section><span class="kick">3 · One thread at a time</span><h2>Which parameter changes the outcome?</h2>
+ <p class="lede">Separate simulations for each factor, then all of them together. The bars compare the four farmers on the metric that matters for that factor.</p>
+ <div class="tabs" id="tabs"></div><div class="panel" id="panel"></div>
+</section>
+
+<section><span class="kick">4 · Zoom out</span><h2>From one plot to the nation</h2>
+ <p class="lede">If many small farms followed the same tool, what changes? Set how many farmers, and compare. This is scaling arithmetic from the model above, not a forecast.</p>
+ <div class="sliders" id="scsl" style="margin-bottom:6px"></div>
+ <div class="big" id="scale"></div>
+ <div class="two" style="margin-top:14px"><div class="panel" id="afford"></div><div class="panel" id="honest"></div></div>
+</section>
+
+<section><span class="kick">Sources</span><h2>Where the numbers come from</h2><ul class="src" id="src"></ul>
+<footer>Concept stage. No prototype yet. The soil-water model is a simple daily bucket; see README for limits and the path to proof of concept.</footer></section>
+</div>
+<script src="model.js"></script><script src="art.js"></script>
+<script>
+const $=id=>document.getElementById(id), D=KR.P.DAYS;
+const fmtINR=n=>'₹'+Math.round(n).toLocaleString('en-IN'), fmtN=n=>Math.round(n).toLocaleString('en-IN');
+const SKY={normal:['🌦️','Normal season','Scattered rain, one false alarm'],drought:['🏜️','Drought spell','Long dry spell, only 7 irrigations of water'],storm:['⛈️','Storm on the way','70 mm right after a watering day'],heat:['🔥','Heat wave','12 scorching days mid-season']};
+const FARMERS=[
+ {t:'none',name:'Ramu',tool:'No forecast: waters by routine, guesses the sky',cost:'₹0'},
+ {t:'forecast',name:'Sunita',tool:'Mobile weather forecast (district-level)',cost:'₹0'},
+ {t:'kit',name:'Vijay',tool:'Commercial sensor kit + app',cost:'₹10,000/yr'},
+ {t:'ours',name:'Anand',tool:'Krishi-Rakshak: symbols and voice, offline',cost:'₹4,100 yr 1'}];
+const st={sc:'drought',cfg:{fcRel:.55,stationRel:.55,fcFalse:.15,kitUse:.5,ourUse:.9},soil:{pH:6.8,ec:.5},econ:{priceMult:1,kitHasPH:false,ourHasEC:true,revenueAcre:50000,kitCostYr:10000},
+ scale:{farmers:100000,acres:2.5,tPerAcre:2.0,kgPerPerson:150},tab:'all',tabPH:5.2,tabEC:3.5};
+const SL=[['fcRel','cfg','Phone forecast: share of rain events it warns about',0,1,.05,v=>Math.round(v*100)+'%'],['stationRel','cfg','Krishi-Rakshak rain signal reliability',0,1,.05,v=>Math.round(v*100)+'%'],
+ ['kitUse','cfg','How often Vijay follows the kit app (assumption)',0,1,.05,v=>Math.round(v*100)+'%'],['ourUse','cfg','How often Anand follows symbols/voice (assumption, pilot to test)',0,1,.05,v=>Math.round(v*100)+'%'],
+ ['pH','soil','Soil pH of the plot',4.5,9,.1,v=>v.toFixed(1)],['ec','soil','Irrigation-water salinity (EC, dS/m)',0,6,.1,v=>v.toFixed(1)],
+ ['priceMult','econ','Crop price (1.0 = normal; 1.3 = +30% hike)',.6,1.8,.05,v=>'×'+v.toFixed(2)],['kitCostYr','econ','Kit yearly cost (₹20k hardware over 5 yrs + ₹500/month)',0,20000,500,v=>fmtINR(v)]];
+function mk(){const farm=(t,k,soil,over)=>KR.farm(k||st.sc,t,st.cfg,soil||st.soil,Object.assign({},st.econ,over||{}));return farm}
+const farm=(t,k,soil,over)=>KR.farm(k||st.sc,t,st.cfg,soil||st.soil,Object.assign({},st.econ,over||{}));
+
+function heroInit(){ $('hero').innerHTML=ART.hero();
+ const C=[['265 of 358','Maharashtra talukas declared drought-affected (Sept 2026), incl. all of Jalgaon','All India Radio','https://newsonair.gov.in/maharashtra-declares-265-talukas-drought-affected/'],
+ ['86.21%','of Indian farm holdings are small or marginal (Agriculture Census 2015-16)','Business Standard','https://business-standard.com/article/economy-policy/indian-farm-size-shrank-further-by-6-in-5-years-to-2015-16-census-shows-118100101057_1.html'],
+ ['₹3,798','average monthly net income from cultivation per farm household (NSS 77th round, 2018-19)','DownToEarth','https://www.downtoearth.org.in/agriculture/home-truth-of-indian-agriculture-farm-income-declined-in-india-in-7-years-79533'],
+ ['7.98%','of net sown area under micro-irrigation after a decade of PMKSY (PIB, June 2026)','PIB','https://static.pib.gov.in/WriteReadData/specificdocs/documents/2026/jun/doc2026630906701.pdf'],
+ ['8–10%','less fertiliser and 5–6% higher yield reported with soil-health testing (NPC study)','PIB','https://static.pib.gov.in/WriteReadData/userfiles/Study%20on%20Impact%20of%20Soil%20Health%20Card%20Scheme.pdf'],
+ ['353.96 Mt','foodgrain output, 2024-25 (third advance estimate, Agriculture Ministry)','GS Times / DESAGRI','https://www.gstimes.in/third-advance-estimates-of-production-of-major-agricultural-crops-for-2024-25']];
+ $('chips').innerHTML=C.map(c=>`<a class="chip" href="${c[3]}" target="_blank" rel="noopener"><i>source</i><b>${c[0]}</b><span>${c[1]}</span><span><u>${c[2]}</u></span></a>`).join('');
+ $('src').innerHTML=C.map(c=>`<li><a href="${c[3]}" target="_blank" rel="noopener">${c[2]}</a>: ${c[0]} ${c[1]}</li>`).concat([
+ `<li><a href="https://inc42.com/playbooks/can-indian-farmers-afford-satellite-data-iot-devices-needed-for-precision-farming" target="_blank" rel="noopener">Inc42 (Dec 2020)</a>: Fasal IoT hardware ₹20,000 or more one-time, subscription ₹500–700 a month; one soil-moisture sensor covers 2–3 acres. Basis for the kit cost (prices may have changed).</li>`,
+ `<li><a href="https://moes.gov.in/sites/default/files/PIB2110767.pdf" target="_blank" rel="noopener">Ministry of Earth Sciences, 12 Mar 2025</a>: 130 Agromet Field Units issue district and block advisories every Tuesday and Friday; five-day forecasts at district and block level.</li>`,
+ `<li><a href="https://eparlib.nic.in/bitstream/123456789/662533/1/16950.pdf" target="_blank" rel="noopener">Lok Sabha Q.3398 (17 Mar 2015, ICAR 2010 estimates)</a>: about 2.7 Mha affected by salinity and 3.7 Mha by alkalinity. Why pH and water quality matter.</li>`,
+ `<li>Everything else (thresholds, rain events, adoption rates, costs per mm, revenue per acre, pH and salinity yield penalties, scale inputs) is an <b>assumption</b> set in <code>model.js</code>.</li>`]).join('')}
+
+function skiesInit(){ $('skies').innerHTML=Object.keys(SKY).map(k=>`<button class="sky" data-k="${k}"><em>${SKY[k][0]}</em><b>${SKY[k][1]}</b><small>${SKY[k][2]}</small></button>`).join('');
+ $('skies').onclick=e=>{const b=e.target.closest('.sky');if(!b)return;st.sc=b.dataset.k;render()};
+ $('sliders').innerHTML=SL.map(s=>`<label>${s[2]}: <b id="v_${s[0]}"></b><input type="range" id="s_${s[0]}" min="${s[3]}" max="${s[4]}" step="${s[5]}"></label>`).join('');
+ SL.forEach(s=>{$('s_'+s[0]).value=st[s[1]][s[0]];$('s_'+s[0]).oninput=e=>{st[s[1]][s[0]]=+e.target.value;render()}});
+ $('toggles').innerHTML=`<label><input type="checkbox" id="t_kit"> Vijay's kit includes a pH probe</label><label><input type="checkbox" id="t_ec" checked> Krishi-Rakshak water-test add-on (proposed, not in current design)</label><button id="bad">Make the soil acidic and the water salty</button><button id="good">Reset soil to healthy</button>`;
+ $('t_kit').onchange=e=>{st.econ.kitHasPH=e.target.checked;render()};$('t_ec').onchange=e=>{st.econ.ourHasEC=e.target.checked;render()};
+ $('bad').onclick=()=>{st.soil.pH=5.2;st.soil.ec=3.0;render()};$('good').onclick=()=>{st.soil.pH=6.8;st.soil.ec=.5;render()};
+ $('scsl').innerHTML=[['farmers','Farmers using the tool',10000,1000000,10000,fmtN],['acres','Acres per farm (avg holding ≈ 2.7 acres, Agri Census 1.08 ha)',.5,6,.5,v=>v.toFixed(1)],['tPerAcre','Foodgrain tonnes per acre (assumption)',.5,4,.25,v=>v.toFixed(2)],['kgPerPerson','kg of foodgrain a person eats per year (assumption)',60,250,10,v=>v+' kg']].map(s=>`<label>${s[1]}: <b id="sv_${s[0]}"></b><input type="range" id="ss_${s[0]}" min="${s[2]}" max="${s[3]}" step="${s[4]}"></label>`).join('');
+ [['farmers',fmtN],['acres',v=>v.toFixed(1)],['tPerAcre',v=>v.toFixed(2)],['kgPerPerson',v=>v+' kg']].forEach(([k,f])=>{const el=$('ss_'+k);el.value=st.scale[k];el.oninput=e=>{st.scale[k]=+e.target.value;render()}});
+}
+function chart(o,d){const W=400,H=170,L=30,R=6,T=8,B=18;const x=i=>L+(i-1)/(D-1)*(W-L-R),y=v=>T+(1-v/110)*(H-T-B);
+ let s=`<svg class="ch" viewBox="0 0 ${W} ${H}" role="img" aria-label="Soil water">`;
+ s+=`<rect x="${L}" y="${y(KR.P.CRIT)}" width="${W-L-R}" height="${y(0)-y(KR.P.CRIT)}" fill="var(--red)" opacity=".13"/>`;
+ [0,50,100].forEach(v=>s+=`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)"/><text x="${L-4}" y="${y(v)+3}" font-size="9" text-anchor="end" fill="var(--mut)">${v}</text>`);
+ s+=`<text x="${L}" y="${H-4}" font-size="9" fill="var(--mut)">day 1</text><text x="${W-R}" y="${H-4}" font-size="9" text-anchor="end" fill="var(--mut)">day 90</text>`;
+ for(let i=1;i<=d;i++){if(o.rain[i]>0){const h=o.rain[i]/110*(H-T-B);s+=`<rect x="${x(i)-1.5}" y="${y(0)-h}" width="3" height="${h}" fill="#b5562b" opacity=".55"/>`}
+  if(o.irrigation[i]>0)s+=`<path d="M${x(i)} ${y(106)} l-4 -8 h8z" fill="var(--grn)"/>`}
+ let p='';for(let i=1;i<=d;i++)p+=(i===1?'M':'L')+x(i).toFixed(1)+' '+y(o.S[i]).toFixed(1);
+ return s+`<path d="${p}" fill="none" stroke="var(--blu)" stroke-width="2.2"/><line x1="${x(d)}" x2="${x(d)}" y1="${T}" y2="${y(0)}" stroke="var(--ink)" opacity=".25"/></svg>`}
+
+function fourInit(){}
+function renderFour(){const d=+$('day').value,sc=KR.SCENARIOS[st.sc];$('dayv').textContent=d;$('blurb').textContent=sc.blurb+' Every farmer has the same field, rain and water. Only the information differs.';
+ const F=FARMERS.map(f=>farm(f.t)),best=F.reduce((a,b,i)=>b.net>F[a].net?i:a,0);
+ $('four4').innerHTML=FARMERS.map((f,i)=>{const r=F[i],o=r.water,rain=o.rain[d],etNow=sc.et(d);
+  const skyK=rain>=1?'rain':etNow>=7?'hot':'sun';
+  const ev=o.events.filter(e=>e[0]===d)[0], morning=o.S[d-1];
+  const sym=f.t==='ours'?(morning<=KR.P.TRIGGER?'square':morning<=KR.P.WATCH?'triangle':'circle'):null;
+  let irr=0,stress=0;for(let k=1;k<=d;k++){if(o.irrigation[k]>0)irr++;if(o.S[k]<KR.P.CRIT)stress++}
+  const mood=stress>=10?'sad':stress>=1?'worried':'happy';
+  let say,sub;
+  if(f.t==='ours'){const w={square:'पाणी द्या',triangle:'लक्ष ठेवा',circle:'सर्व ठीक'}[sym];say=ev?ev.slice(2).join(''):w;sub='Voice (Marathi): “'+w+'”. Soil '+Math.round(morning)+' mm.'}
+  else if(f.t==='kit'){say=ev?ev[2]:'App: soil '+Math.round(morning)+' mm';sub='Needs a smartphone, data and a subscription.'}
+  else if(f.t==='forecast'){say=ev?ev[2]:'Phone: “40% chance of rain in your district”';sub='District forecast, no idea what is in the soil.'}
+  else{say=ev?ev[2]:'“Looks dry. Is it time? Water on schedule.”';sub='No data about this plot.'}
+  const yTxt=Math.round(r.yieldTotal*100)+'%';
+  return `<div class="fc ${i===best?'best':''}">${i===best?'<span class="crown">Most income left</span>':''}${ART.farmer(i,mood,skyK,sym)}
+  <h3>${f.name}</h3><div class="tool">${f.tool} · ${f.cost}</div>${chart(o,d)}
+  <div class="say"><b>${say}</b><small>${sub}</small></div>
+  <div class="mm"><div><b>${irr}</b><span>irrigations</span></div><div><b>${stress}</b><span>days crop stressed</span></div><div><b>${d===D?yTxt:'…'}</b><span>crop yield (full season)</span></div><div class="money"><b>${d===D?fmtINR(r.net):'…'}</b><span>₹/acre after water + device</span></div></div></div>`}).join('')}
+
+function bars(rows,fmt,low){const vals=rows.map(r=>r.v),mx=Math.max(...vals,1e-9),mn=Math.min(...vals);
+ const best=low?mn:mx;return rows.map(r=>`<div class="row"><span><b>${r.n}</b></span><div class="track"><div class="fill" style="width:${Math.max(3,r.v/mx*100)}%;background:${r.v===best?'var(--grn)':'var(--ter)'};opacity:${r.v===best?1:.75}"></div></div><span class="v">${fmt(r.v)}</span></div>`).join('')}
+const NEUT={pH:6.8,ec:.5};
+const TABS=[
+ {id:'water',l:'💧 Water',sc:'normal',soil:()=>NEUT,m:[['Water used per season (mm). Lower is better',f=>f.water.waterUsed,v=>v+' mm',1]],why:'Soil data turns “every 8 days” into “only when the roots need it”. In a normal season the crop is the same, the water bill is not. A forecast alone cannot see inside the soil.'},
+ {id:'rain',l:'⛈️ Rain alert',sc:'storm',soil:()=>NEUT,m:[['Water lost to drainage before the storm (mm). Lower is better',f=>f.water.drained,v=>Math.round(v)+' mm',1]],why:'Holding irrigation before a storm is the rain alert at work. Honest result: its gain is small next to soil-based timing, and local rain-alert skill is not yet validated. The pilot must measure it.'},
+ {id:'heat',l:'🔥 Heat wave',sc:'heat',soil:()=>NEUT,m:[['Days the crop was water-stressed. Lower is better',f=>f.water.stress,v=>v+' days',1]],why:'Hot days drain the soil faster than any calendar assumes. A probe at root depth sees it early.'},
+ {id:'drought',l:'🏜️ Drought',sc:'drought',soil:()=>NEUT,m:[['Crop yield vs full potential (%). Higher is better',f=>f.yieldTotal*100,v=>v.toFixed(1)+'%',0]],why:'With the same limited water, spending it when the soil says so protects the crop. This is the scenario judges care about this year.'},
+ {id:'ph',l:'🧪 Soil pH',sc:'normal',soil:()=>({pH:st.tabPH,ec:.5}),m:[['Crop yield (%). Higher is better',f=>f.yieldTotal*100,v=>v.toFixed(1)+'%',0]],slider:['tabPH','Plot soil pH',4.5,9,.1,v=>v.toFixed(1)],why:'Outside about pH 6.0–7.5 nutrients lock up and yield drops (assumed penalty). Only a tool that measures pH can tell Ramu to add lime or gypsum. On healthy soil (pH 6.0–7.5) this gives no advantage.'},
+ {id:'ec',l:'🧂 Water quality',sc:'normal',soil:()=>({pH:6.8,ec:st.tabEC}),m:[['Crop yield (%). Higher is better',f=>f.yieldTotal*100,v=>v.toFixed(1)+'%',0]],slider:['tabEC','Irrigation-water salinity (EC, dS/m)',0,6,.1,v=>v.toFixed(1)],why:'Salty borewell water quietly cuts yield (assumed penalty above 1.5 dS/m). Only the proposed water-test add-on notices; it is not in the current design.'},
+ {id:'all',l:'🌾 All together',sc:null,soil:()=>st.soil,m:[['Income left per acre after water + device costs (₹). Higher is better',f=>f.net,fmtINR,0],['Crop yield (%). Higher is better',f=>f.yieldTotal*100,v=>v.toFixed(1)+'%',0]],why:'Run everything at once with the season, soil and prices you chose above. The picture changes with the conditions, and in a good year with healthy soil the tools roughly break even. They pay off when conditions turn bad.'}];
+function renderTabs(){$('tabs').innerHTML=TABS.map(t=>`<button class="tab ${t.id===st.tab?'on':''}" data-t="${t.id}">${t.l}</button>`).join('');
+ $('tabs').onclick=e=>{const b=e.target.closest('.tab');if(b){st.tab=b.dataset.t;renderTabs();renderPanel()}};renderPanel()}
+function renderPanel(){const t=TABS.find(x=>x.id===st.tab),key=t.sc||st.sc;let h='';
+ if(t.slider){const s=t.slider;h+=`<label style="font-size:14px">${s[1]}: <b>${s[5](st[s[0]])}</b> <input type="range" id="tsl" min="${s[2]}" max="${s[3]}" step="${s[4]}" value="${st[s[0]]}" style="width:260px;vertical-align:middle"></label>`}
+ const R=FARMERS.map(f=>farm(f.t,key,t.soil()));
+ t.m.forEach(m=>{h+=`<h4 style="margin:12px 0 2px">${m[0]}</h4>`+bars(FARMERS.map((f,i)=>({n:f.name,v:m[1](R[i])})),m[2],m[3])});
+ h+=`<div class="why">${t.why}</div>`;$('panel').innerHTML=h;
+ if(t.slider){$('tsl').oninput=e=>{st[t.slider[0]]=+e.target.value;renderPanel()}}}
+
+function renderScale(){const S=KR.scale(st.sc,st.cfg,st.soil,st.econ,st.scale),N=353.96e6;
+ $('scale').innerHTML=FARMERS.slice(1).map((f,i)=>{const r=S[f.t];return `<div class="bn"><h4>${f.name}: ${f.tool.split(':')[0]}</h4><small>Compared with farmers who have no forecast</small>
+ <b>${r.tonnes>=0?'+':''}${fmtN(r.tonnes)} t</b><small>extra foodgrain (${(r.tonnes/N*100).toFixed(2)}% of national output)</small>
+ <b>${fmtN(r.people)}</b><small>people's yearly foodgrain</small>
+ <b>${r.incomeCr>=0?'+':''}₹${r.incomeCr.toFixed(1)} Cr</b><small>farmer income after water + device costs</small>
+ <b>${fmtN(r.waterML)} ML</b><small>water saved (1 ML = 1 million litres)</small></div>`}).join('');
+ const m=3798;$('afford').innerHTML=`<h4 style="margin:0 0 6px">Can a small farmer afford it?</h4>`+bars([{n:'Vijay: kit',v:20000/m},{n:'Anand: Krishi-Rakshak',v:3500/m}],v=>v.toFixed(1)+' months',true)+`<div class="why">Upfront cost measured in months of average cultivation income (₹3,798 per month, NSS). Kit: ₹20,000+ hardware (Inc42). Krishi-Rakshak: ₹3,500 fee, a target not yet built.</div>`;
+ $('honest').innerHTML=`<h4 style="margin:0 0 6px">Straight talk</h4><ul style="margin:0;padding-left:18px;font-size:14px"><li>Most of the gain is <b>soil-based timing</b>, not rain prediction.</li><li>Vijay's kit does the same irrigation job; Anand's edge is cost, offline voice use and the pH check (assumed).</li><li>"How often the farmer follows the device" is an assumption. Testing it with farmers is the point of the pilot.</li><li>On healthy soil in a good year, income barely moves. The tools pay off in drought, heat and bad soil.</li></ul>`}
+
+let timer=null;
+function render(){$('skies').querySelectorAll('.sky').forEach(b=>b.classList.toggle('on',b.dataset.k===st.sc));
+ SL.forEach(s=>{$('v_'+s[0]).textContent=s[6](st[s[1]][s[0]]);$('s_'+s[0]).value=st[s[1]][s[0]]});
+ [['farmers',fmtN],['acres',v=>v.toFixed(1)],['tPerAcre',v=>v.toFixed(2)],['kgPerPerson',v=>v+' kg']].forEach(([k,f])=>{$('sv_'+k).textContent=f(st.scale[k])});
+ renderFour();renderPanel();renderScale()}
+$('day').oninput=renderFour;
+$('play').onclick=()=>{if(timer){clearInterval(timer);timer=null;$('play').textContent='▶ Play the season';return}
+ $('day').value=1;renderFour();$('play').textContent='⏸ Pause';timer=setInterval(()=>{let d=+$('day').value+1;if(d>D){clearInterval(timer);timer=null;$('play').textContent='▶ Play the season';return}$('day').value=d;renderFour()},110)};
+heroInit();skiesInit();renderTabs();
+const q=new URLSearchParams(location.search);if(q.get('s')&&SKY[q.get('s')])st.sc=q.get('s');if(q.get('bad')){st.soil.pH=5.2;st.soil.ec=3}if(q.get('tab'))st.tab=q.get('tab');if(q.get('day'))$('day').value=q.get('day');
+renderTabs();render();
+</script></body></html>
